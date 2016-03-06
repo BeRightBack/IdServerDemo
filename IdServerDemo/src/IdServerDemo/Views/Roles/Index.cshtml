@@ -1,0 +1,43 @@
+﻿
+@model IEnumerable<ApplicationRole>
+@{
+    ViewBag.Title = "Roles";
+}
+<div class="panel mb25">
+    <div class="panel-heading">
+        <span>Roles</span>
+        <span class="pull-right">
+            <a asp-action="Create">Create New</a> | @Html.ActionLink("Manage User Role", "ManageUserRoles")
+        </span>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped mb0">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Name)</th>
+                        <th>@Html.DisplayNameFor(model => model.Description)</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                            
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" ><i class="fa fa-edit"></i></a>
+                                &nbsp;
+                                <a asp-action="Details" asp-route-id="@item.Id" ><i class="fa fa-eye"></i></a>
+                                &nbsp;
+                                <a asp-action="Delete" asp-route-id="@item.Id" ><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

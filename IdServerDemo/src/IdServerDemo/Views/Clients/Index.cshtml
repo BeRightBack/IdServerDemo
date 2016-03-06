@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Application>
+@{
+    ViewBag.Title = "Clients";
+}
+<div class="panel mb25">
+    <div class="panel-heading">
+        <span>Clients</span>
+        <span class="pull-right">
+            <a asp-action="Create">Create New</a>
+        </span>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped mb0">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.ApplicationID)</th>
+                        <th>@Html.DisplayNameFor(model => model.DisplayName)</th>
+                        <th>@Html.DisplayNameFor(model => model.RedirectUri)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.ApplicationID)</td>
+                                <td>@Html.DisplayFor(modelItem => item.DisplayName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.RedirectUri)</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-applicationID="@item.ApplicationID"><i class="fa fa-edit"></i></a>
+                                    &nbsp;
+                                    @*<a asp-action="Details" asp-route-id="@item.ApplicationID"><i class="fa fa-eye"></i></a>
+                                        &nbsp;*@
+                                    <a asp-action="Delete" asp-route-applicationID="@item.ApplicationID"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

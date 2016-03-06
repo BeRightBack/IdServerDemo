@@ -1,0 +1,31 @@
+﻿@model string
+
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a asp-controller="Account" asp-action="Manage" title="Manage">Welcome, @User.Identity.Name</a>
+        </li>
+        <li>
+            <a href="/signout">Log off</a>
+        </li>
+    </ul>
+
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        @*<li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="Register">Register<span class="caret"></span></a>
+            <ul class="dropdown-menu" aria-labelledby="Register">
+
+                <li class="divider" style="color : Black;"></li>
+                <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+                <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+                <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+            </ul>
+        </li>*@
+        <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+        <li><a href="/signin">Log in</a></li>
+    </ul>
+}

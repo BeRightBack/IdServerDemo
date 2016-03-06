@@ -1,0 +1,230 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Carousel */
+.carousel-caption {
+    z-index: 10 !important;
+}
+
+    .carousel-caption p {
+        font-size: 20px;
+        line-height: 1.4;
+    }
+
+@media (min-width: 768px) {
+    .carousel-caption {
+        z-index: 10 !important;
+    }
+}
+/*=======================================================================================================================================================*/
+/* ----------Modified-----------------------Modified-----------------------Modified-----------------------Modified------------- */
+/* ----------Modified-----------------------Modified-----------------------Modified-----------------------Modified------------- */
+/*=======================================================================================================================================================*/
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('/fonts/glyphicons-halflings-regular.eot');
+    src: url('/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+}
+
+@font-face {
+    font-family: Cabin;
+    src: url('/fonts/cabin-regular-webfont.eot');
+    src: url('/fonts/cabin-regular-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/cabin-regular-webfont.woff') format('woff'), url('/fonts/cabin-regular-webfont.ttf') format('truetype'), url('/fonts/cabin-regular-webfont.svg#cabinregular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Cabin;
+    src: url('/fonts/cabin-bold-webfont.eot');
+    src: url('/fonts/cabin-bold-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/cabin-bold-webfont.woff') format('woff'), url('/fonts/cabin-bold-webfont.ttf') format('truetype'), url('/fonts/cabin-bold-webfont.svg#cabinbold') format('svg');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Lobster;
+    src: url('/fonts/lobster_1.3-webfont.eot');
+    src: url('/fonts/lobster_1.3-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/lobster_1.3-webfont.woff') format('woff'), url('/fonts/lobster_1.3-webfont.ttf') format('truetype'), url('/fonts/lobster_1.3-webfont.svg#lobster_1.3regular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lobster2';
+    src: url('/fonts/lobstertwo-regular-webfont.eot');
+    src: url('/fonts/lobstertwo-regular-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/lobstertwo-regular-webfont.woff') format('woff'), url('/fonts/lobstertwo-regular-webfont.ttf') format('truetype'), url('/fonts/lobstertwo-regular-webfont.svg#lobster_tworegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Curvy';
+    src: url('/fonts/learningcurve_ot-webfont.eot');
+    src: url('/fonts/learningcurve_ot-webfont.eot?#iefix') format('embedded-opentype'), url('/fonts/learningcurve_ot-webfont.woff') format('woff'), url('/fonts/learningcurve_ot-webfont.ttf') format('truetype'), url('/fonts/learningcurve_ot-webfont.svg#learning_curve_proregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container {
+        width: 1370px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .container {
+        width: 1570px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+
+    .nav li {
+        float: none !important;
+        margin: 0 !important;
+        text-align: center !important;
+    }
+}
+
+.Qty {
+    width: 35px;
+    height: 25px;
+}
+
+div.center {
+    margin-left: auto;
+    margin-right: auto;
+    width: 98%;
+    background-color: transparent;
+}
+
+.footer {
+    margin: 15px;
+    float: left;
+}
+
+.fb-like {
+    margin: 15px;
+    float: right;
+}
+
+.Lego {
+    margin: 15px;
+    float: left;
+}
+
+.m15 {
+    margin: 15px;
+}
+
+.ml15 {
+    margin-left: 15px;
+}
+
+.mr15 {
+    margin-right: 15px;
+}
+
+.mt15 {
+    margin-top: 15px;
+}
+
+.mb15 {
+    margin-bottom: 15px;
+}
+
+.spacing2 {
+    margin-right: 30px;
+    margin-top: 30px;
+}
+
+.m5 {
+    margin: 5px;
+}
+
+.ml5 {
+    margin-left: 5px;
+}
+
+.mr5 {
+    margin-right: 5px;
+}
+
+.mt5 {
+    margin-top: 5px;
+}
+
+.mb5 {
+    margin-bottom: 5px;
+}
+
+
+
+.editor-multiline-field {
+    margin: 5px;
+    font-weight: bold;
+    color: #000000;
+}
+
+    .editor-multiline-field textarea{
+        width: 100%;
+        height: 100%;
+        max-height: 1000px;
+        min-height: 350px;
+    }
+
+.editor-field {
+    margin: 5px;
+    font-weight: bold;
+    color: #000000;
+}
+
+    .editor-field textarea{
+        width: 100%;
+        height: 100%;
+    }
+
+.Post-field {
+    margin: 5px;
+    font-weight: bold;
+    /*color: #808080;*/
+}
+
+    .Post-field textarea {
+        width: 100%;
+        resize: vertical;
+        height: 100%;
+        max-height: 1900px;
+        min-height: 350px;
+    }
+
+.color {
+    color: black;
+}
+  
+/* ----------Modified-----------------------Modified-----------------------Modified-----------------------Modified------------- */
+
+

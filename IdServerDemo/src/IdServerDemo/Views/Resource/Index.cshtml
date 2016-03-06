@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ApplicationResource>
+@{
+    ViewBag.Title = "Resources Uri";
+}
+<div class="panel mb25">
+    <div class="panel-heading">
+        <span>ViewBag.Title</span>
+        <span class="pull-right">
+            <a asp-action="Create">Add a new ressource Uri</a>
+        </span>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped mb0">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.ResourceUri)</th>                        
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.ResourceUri)</td>                                
+                                <td>
+                                    <a asp-action="Edit" asp-route-ResourceUri="@item.Id"><i class="fa fa-edit"></i></a>
+                                    &nbsp;
+                                    @*<a asp-action="Details" asp-route-id="@item.ApplicationID"><i class="fa fa-eye"></i></a>
+                                        &nbsp;*@
+                                    <a asp-action="Delete" asp-route-ResourceUri="@item.Id"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

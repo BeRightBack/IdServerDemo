@@ -1,0 +1,62 @@
+﻿@model IdServerDemo.ViewModels.ClientViewModel
+
+@{
+    ViewBag.Title = "Create";
+
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm("Create", "Clients", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Role</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicationID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ApplicationID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ApplicationID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DisplayName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.DisplayName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DisplayName)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RedirectUri, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.RedirectUri, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RedirectUri)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.LogoutRedirectUri, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.LogoutRedirectUri, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LogoutRedirectUri)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Secret, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Secret, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Secret)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
