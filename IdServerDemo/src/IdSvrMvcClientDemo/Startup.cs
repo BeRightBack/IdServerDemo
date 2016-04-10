@@ -9,12 +9,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.AspNet.Mvc;
 
 namespace IdSvrMvcClientDemo
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup()
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
@@ -28,6 +29,15 @@ namespace IdSvrMvcClientDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin();
+                    });
+            });//Wide open for test purposes but sould be more restrictive
+
             services.Configure<SharedAuthenticationOptions>(options => {
                 options.SignInScheme = "ClientCookie";
             });
@@ -35,7 +45,10 @@ namespace IdSvrMvcClientDemo
             services.AddAuthentication();
 
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,11 +101,11 @@ namespace IdSvrMvcClientDemo
                 // Note: setting the Authority allows the OIDC client middleware to automatically
                 // retrieve the identity provider's configuration and spare you from setting
                 // the different endpoints URIs or the token validation parameters explicitly.
-                options.Authority = "https://localhost:44366/";
+                options.Authority = "https://localhost:44337/";
 
                 // Note: the resource property represents the different endpoints the
                 // access token should be issued for (values must be space-delimited).
-                options.Resource = "https://localhost:44366/";
+                options.Resource = "https://localhost:44337/";
                 options.Scope.Add("api-resource-controller");
             });
             app.UseMvc(routes =>

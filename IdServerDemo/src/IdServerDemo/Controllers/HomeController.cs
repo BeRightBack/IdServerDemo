@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
-using MailKit;
-using IdServerDemo.ViewModels;
 using IdServerDemo.Services;
+using IdServerDemo.ViewModels;
 
 namespace IdServerDemo.Controllers
 {
@@ -17,7 +13,6 @@ namespace IdServerDemo.Controllers
         {
             _emailSender = emailSender;
         }
-
         public IActionResult Index()
         {
             return View();
@@ -29,7 +24,7 @@ namespace IdServerDemo.Controllers
 
             return View();
         }
-
+        [Authorize]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
@@ -54,12 +49,13 @@ namespace IdServerDemo.Controllers
 
                 ViewData["Success"] = "Mail Sent. Thanks!";
 
-                
+
             }
 
             return View();
 
         }
+
 
         public IActionResult Error()
         {

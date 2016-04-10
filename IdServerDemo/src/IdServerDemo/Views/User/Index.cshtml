@@ -1,0 +1,79 @@
+﻿
+@model IPagedList<ApplicationUser>
+
+@{
+    ViewBag.Title = "Users";
+    
+}
+<br /><br />
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        User Accounts
+    </div>
+  <form asp-controller="Users" asp-action="Index" method="get">
+      <p>
+          <div class="form-horizontal">
+              <div class="form-group">
+                  <div class="control-label m15">
+                      <Label class = "control-label ml15", style = "float: left">Find by name:</Label>
+                      @Html.TextBox("SearchString","", new { @class = "form-control ml15", style = "float: left" })
+                  </div>
+                  <div class="ml15" style="float: left">
+                      <input type="submit" value="Search" class="btn btn-default" />
+                  </div>
+              </div>
+          </div>
+      </p>
+  </form>
+   
+   
+    <table class="table table-striped">
+        <tr>
+            <th>@Html.ActionLink("Name", "Index", new { sortorder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })</th>
+            <th>@Html.ActionLink("Email", "Index", new { sortorder = ViewBag.EmailSortParm, currentFilter = ViewBag.CurrentFilter })</th>
+            <th>@Html.ActionLink("Address", "Index", new { sortorder = ViewBag.AddressSortParm, currentFilter = ViewBag.CurrentFilter })</th>
+                   
+        </tr>
+        @if (Model.Count() == 0)
+        {
+            <tr><td colspan="3" class="text-center">No User Accounts</td></tr>
+        }
+        else
+        {
+            foreach (ApplicationUser user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.DisplayAddress</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = user.Id }, new { @class = "btn btn-primary btn-xs" })
+                        @Html.ActionLink("Details", "Details", new { id = user.Id }, new { @class = "btn btn-primary btn-xs" })
+                        @Html.ActionLink("Delete", "Delete", new { id = user.Id }, new { @class = "btn btn-danger btn-xs" })
+                                             
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<p>
+    <a asp-action="Create" class = "btn btn-primary ml15">Create New</a>
+</p>
+<br />
+<div>
+    <cs-pager cs-paging-pagesize="@Model.PageSize"
+              cs-paging-pagenumber="@Model.PageNumber"
+              cs-paging-totalitems="@Model.TotalItemCount"
+              cs-pagenumber-param="page"
+              cs-show-first-last="true"
+              cs-suppress-empty-nextprev="true"
+              cs-suppress-inactive-firstlast="true"
+              cs-first-page-text="First"
+              cs-last-page-text="Last"
+              asp-controller="Users"
+              asp-action="Index"
+              asp-route-sortorder = ViewBag.NameSortParm
+              asp-route-currentFilter = ViewBag.CurrentFilter></cs-pager>
+</div>
+

@@ -1493,28 +1493,6 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "NWebsec.Core/1.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/45/NWebsec.Core.dll": {}
-        },
-        "runtime": {
-          "lib/45/NWebsec.Core.dll": {}
-        }
-      },
-      "NWebsec.Owin/1.0.0": {
-        "type": "package",
-        "dependencies": {
-          "NWebsec.Core": "[1.0.0]",
-          "Owin": "1.0.0"
-        },
-        "compile": {
-          "lib/45/NWebsec.Owin.dll": {}
-        },
-        "runtime": {
-          "lib/45/NWebsec.Owin.dll": {}
-        }
-      },
       "Owin/1.0.0": {
         "type": "package",
         "compile": {
@@ -5621,28 +5599,6 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "NWebsec.Core/1.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/45/NWebsec.Core.dll": {}
-        },
-        "runtime": {
-          "lib/45/NWebsec.Core.dll": {}
-        }
-      },
-      "NWebsec.Owin/1.0.0": {
-        "type": "package",
-        "dependencies": {
-          "NWebsec.Core": "[1.0.0]",
-          "Owin": "1.0.0"
-        },
-        "compile": {
-          "lib/45/NWebsec.Owin.dll": {}
-        },
-        "runtime": {
-          "lib/45/NWebsec.Owin.dll": {}
-        }
-      },
       "Owin/1.0.0": {
         "type": "package",
         "compile": {
@@ -7394,28 +7350,6 @@
         },
         "runtime": {
           "lib/net45/Newtonsoft.Json.dll": {}
-        }
-      },
-      "NWebsec.Core/1.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/45/NWebsec.Core.dll": {}
-        },
-        "runtime": {
-          "lib/45/NWebsec.Core.dll": {}
-        }
-      },
-      "NWebsec.Owin/1.0.0": {
-        "type": "package",
-        "dependencies": {
-          "NWebsec.Core": "[1.0.0]",
-          "Owin": "1.0.0"
-        },
-        "compile": {
-          "lib/45/NWebsec.Owin.dll": {}
-        },
-        "runtime": {
-          "lib/45/NWebsec.Owin.dll": {}
         }
       },
       "Owin/1.0.0": {
@@ -14460,32 +14394,6 @@
         "tools/install.ps1"
       ]
     },
-    "NWebsec.Core/1.0.0": {
-      "type": "package",
-      "sha512": "iV9rjuhDUDclnHbOeEd3aeqfLTowR5YZBxlENgnrYmaloTD0hcpGvsrj9QXZJLTjQ/CEzRheQc66tgHq24cqTg==",
-      "files": [
-        "lib/35/NWebsec.Core.dll",
-        "lib/35/NWebsec.Core.xml",
-        "lib/40/NWebsec.Core.dll",
-        "lib/40/NWebsec.Core.xml",
-        "lib/45/NWebsec.Core.dll",
-        "lib/45/NWebsec.Core.xml",
-        "NWebsec.Core.1.0.0.nupkg",
-        "NWebsec.Core.1.0.0.nupkg.sha512",
-        "NWebsec.Core.nuspec"
-      ]
-    },
-    "NWebsec.Owin/1.0.0": {
-      "type": "package",
-      "sha512": "8bI2O9f1ijLIuB1btTXKM4ykHyEwBCd7y1KBueo1axcMAPnCUzkgVhGGQNJRQg7273rrVRCqKrm7Bz27wqyLsQ==",
-      "files": [
-        "lib/45/NWebsec.Owin.dll",
-        "lib/45/NWebsec.Owin.xml",
-        "NWebsec.Owin.1.0.0.nupkg",
-        "NWebsec.Owin.1.0.0.nupkg.sha512",
-        "NWebsec.Owin.nuspec"
-      ]
-    },
     "Owin/1.0.0": {
       "type": "package",
       "sha512": "OseTFniKmyp76mEzOBwIKGBRS5eMoYNkMKaMXOpxx9jv88+b6mh1rSaw43vjBOItNhaLFG3d0a20PfHyibH5sw==",
@@ -18381,8 +18289,7 @@
     ],
     "DNX,Version=v4.5.1": [
       "Microsoft.AspNet.Owin >= 1.0.0-rc1-final",
-      "Microsoft.Owin >= 3.0.0",
-      "NWebsec.Owin >= 1.0.0"
+      "Microsoft.Owin >= 3.0.0"
     ],
     "DNXCore,Version=v5.0": []
   }

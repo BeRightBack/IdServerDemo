@@ -7,12 +7,8 @@ namespace IdServerDemo.ViewModels.Account
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "User Name")]
-        public string UserName { get; set; }
-
-        //[Required]
-        //[EmailAddress]
-        //public string Email { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -20,7 +16,5 @@ namespace IdServerDemo.ViewModels.Account
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
-
-        public IEnumerable<AuthenticationDescription> DisplayName { get; set; }
     }
 }

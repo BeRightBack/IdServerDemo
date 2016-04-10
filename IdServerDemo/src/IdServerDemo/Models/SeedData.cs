@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,38 +70,26 @@ namespace IdServerDemo.Models
             _context.SaveChanges();
 
             var pass = "?DemoPassword123";
-            var user = new ApplicationUser { UserName = "demoadmin", Email = "sgpconcept@example.com" };
-            user.UserName = "DemoAdmin";
-            user.Email = "sgpconcept.com@example.com";
-            user.FirstName = "Steven";
-            user.LastName = "Pinel";
-            user.BirthDate = DateTime.Parse("12/09/1965");
-            user.Country = "Canada";
-            user.EmailConfirmed = true;
+            var user = new ApplicationUser() {
+                UserName = "DemoAdmin",
+                Email = "sgpconcept@example.com",
+                FirstName = "Steven",
+                LastName = "Pinel",
+                BirthDate = DateTime.Parse("12/09/1965"),
+                Country = "Canada",
+                EmailConfirmed = true
+        };            
             
             var result = _userManager.CreateAsync(user, pass);
 
-            ApplicationUser _user = _context.Users.Where(u => u.UserName.Equals("DemoAdmin", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-            
-                await _userManager.AddToRoleAsync(_user, "Administrators");
-            
-            //newUser = new ApplicationUser
-            //{
-            //    UserName = "DemoUser",
-            //    Email = "sgpconcept.org@example.com",
-            //    FirstName = "Steven",
-            //    LastName = "Pinel",
-            //    BirthDate = DateTime.Parse("12/09/1965"),
-            //    Country = "Canada",
-            //    EmailConfirmed = true
-            //};
+            if (result != null)
+            {
+                ApplicationUser _user = _context.Users.Where(u => u.UserName.Equals("DemoAdmin", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
 
-            // result = await userManager.CreateAsync(newUser, "DemoPassword");
-            //if (result.Succeeded)
-            //{
-            //    await userManager.AddToRoleAsync(newUser, "Users");
-            //}
-        
+                await _userManager.AddToRoleAsync(_user, "Administrators");
+            }
+
+            
         }
     }
 }

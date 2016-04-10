@@ -8,15 +8,11 @@ using System.Threading.Tasks;
 using System.Net; 
 
 namespace IdServerDemo.Services
-{
-    // This class is used by the application to send Email and SMS
-    // when you turn on two-factor authentication in ASP.NET Identity.
-    // For more details see this link http://go.microsoft.com/fwlink/?LinkID=532713
+{    
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
         public Task SendEmailAsync(string to, string from, string subject, string message)
         {
-            // Credentials:
             var credentialUserName = Startup.Configuration["SmtpUser"];
             var pwd = Startup.Configuration["SmtpPwd"];
             var smtp = Startup.Configuration["SmtpSvr"];
@@ -32,7 +28,7 @@ namespace IdServerDemo.Services
             emailMessage.Body = builder.ToMessageBody();
 
             using (var client = new SmtpClient())
-            {   // Creatte the credentials:
+            {   
                 NetworkCredential credentials =
                     new NetworkCredential(credentialUserName, pwd);
                 client.LocalDomain = "sgpconcept.com";

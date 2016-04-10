@@ -12,6 +12,8 @@ namespace IdSvrMvcClientDemo.Controllers
 {
     public class TestController : Controller
     {
+        string api1 = Startup.Configuration["Api1"];
+
         [HttpGet("~/Test")]
         public ActionResult Index()
         {
@@ -23,7 +25,7 @@ namespace IdSvrMvcClientDemo.Controllers
         {
             using (var client = new HttpClient())
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:44366/api/message");
+                var request = new HttpRequestMessage(HttpMethod.Get, api1);
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
 
                 var response = await client.SendAsync(request, cancellationToken);

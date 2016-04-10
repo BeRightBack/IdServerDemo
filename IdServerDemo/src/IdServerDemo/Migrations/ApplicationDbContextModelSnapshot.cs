@@ -8,7 +8,7 @@ using IdServerDemo.Models;
 namespace IdServerDemo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    class ApplicationDbContextModelSnapshot : ModelSnapshot
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -16,8 +16,11 @@ namespace IdServerDemo.Migrations
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("IdServerDemo.Models.Application", b =>
+            modelBuilder.Entity("IdServerDemo.Models.ApplicationClient", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
                     b.Property<string>("ApplicationID");
 
                     b.Property<string>("DisplayName");
@@ -28,7 +31,7 @@ namespace IdServerDemo.Migrations
 
                     b.Property<string>("Secret");
 
-                    b.HasKey("ApplicationID");
+                    b.HasKey("Id");
                 });
 
             modelBuilder.Entity("IdServerDemo.Models.ApplicationResource", b =>

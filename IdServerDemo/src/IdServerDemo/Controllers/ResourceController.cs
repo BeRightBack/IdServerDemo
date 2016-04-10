@@ -1,12 +1,11 @@
 ﻿using System.Globalization;
+using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using IdServerDemo.Models;
-using System.Net;
-using System.Linq;
-using System;
-using Microsoft.AspNet.Identity;
 using IdServerDemo.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -56,7 +55,7 @@ namespace IdServerDemo.Controllers
                 ApplicationResource app = new ApplicationResource
                 {
                     ResourceUri = model.ResourceUri
-                    
+
                 };
 
                 _context.ApplicationResources.Add(app);
@@ -96,7 +95,7 @@ namespace IdServerDemo.Controllers
                 var app = _context.ApplicationResources.FirstOrDefault(r => r.Id == model.Id);
 
                 app.ResourceUri = model.ResourceUri;
-                
+
 
                 _context.ApplicationResources.Update(app);
                 _context.SaveChanges();
@@ -123,7 +122,7 @@ namespace IdServerDemo.Controllers
         }
 
 
-        [Authorize(Policy = "API"), HttpGet, Route("api/message")]        
+        [Authorize(Policy = "API"), HttpGet, Route("api/message")]
         public IActionResult GetMessage()
         {
             var identity = User.Identity as ClaimsIdentity;

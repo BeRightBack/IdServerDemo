@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Authentication.JwtBearer;
+﻿using Microsoft.AspNet.Authentication.JwtBearer;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +12,7 @@ namespace IdSvrApiDemo
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup()
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
@@ -37,7 +33,6 @@ namespace IdSvrApiDemo
                     {
                         builder.AllowAnyOrigin();
                     });
-                //builder => builder.WithOrigins("https://localhost:44366/", "Https://sgpconcept.com", "https://localhost:44359/", "https://localhost:44353/", "Https://127.0.0.1:44396"));
             });
 
             services.AddAuthorization(options => {
@@ -53,7 +48,7 @@ namespace IdSvrApiDemo
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -70,9 +65,8 @@ namespace IdSvrApiDemo
                     options.AutomaticAuthenticate = true;
                     options.AutomaticChallenge = true;
                     options.RequireHttpsMetadata = true;
-
-                    options.Audience = "https://localhost:44366/";
-                    options.Authority = "https://localhost:44366/";
+                    options.Audience = Configuration["Audience"];
+                    options.Authority = Configuration["Authority"];
                 });
             });
             app.UseMvc();

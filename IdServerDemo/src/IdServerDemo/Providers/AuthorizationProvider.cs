@@ -32,7 +32,7 @@ namespace IdServerDemo.Providers
             var database = context.HttpContext.RequestServices.GetRequiredService<ApplicationDbContext>();
 
             // Retrieve the application details corresponding to the requested client_id.
-            var application = await (from entity in database.Applications
+            var application = await (from entity in database.ApplicationClients
                                      where entity.ApplicationID == context.ClientId
                                      select entity).SingleOrDefaultAsync(context.HttpContext.RequestAborted);
 
@@ -62,7 +62,7 @@ namespace IdServerDemo.Providers
             var database = context.HttpContext.RequestServices.GetRequiredService<ApplicationDbContext>();
 
             // Retrieve the application details corresponding to the requested client_id.
-            var application = await (from entity in database.Applications
+            var application = await (from entity in database.ApplicationClients
                                      where entity.ApplicationID == context.ClientId
                                      select entity).SingleOrDefaultAsync(context.HttpContext.RequestAborted);
 
@@ -94,7 +94,7 @@ namespace IdServerDemo.Providers
 
             // Note: ValidateClientLogoutRedirectUri is not invoked when post_logout_redirect_uri is null.
             // When provided, post_logout_redirect_uri must exactly match the address registered by the client application.
-            if (!await database.Applications.AnyAsync(application => application.LogoutRedirectUri == context.PostLogoutRedirectUri))
+            if (!await database.ApplicationClients.AnyAsync(application => application.LogoutRedirectUri == context.PostLogoutRedirectUri))
             {
                 context.Rejected(error: "invalid_client", description: "Invalid post_logout_redirect_uri");
 

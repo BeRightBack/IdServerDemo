@@ -1,15 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
+using Microsoft.Data.Entity;
 using IdServerDemo.Models;
 using IdServerDemo.Services;
 using IdServerDemo.ViewModels.Account;
-using System;
 
 namespace IdServerDemo.Controllers
 {
@@ -20,20 +20,21 @@ namespace IdServerDemo.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
-        private readonly ILogger _logger;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
+            RoleManager<ApplicationRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ISmsSender smsSender)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
-            _logger = loggerFactory.CreateLogger<AccountController>();
+
         }
 
         //
@@ -57,7 +58,7 @@ namespace IdServerDemo.Controllers
             if (ModelState.IsValid)
             {
                 // Require the user to have a confirmed email before they can log on.
-                var user = await _userManager.FindByEmailAsync(model.UserName);
+                var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
                     if (!await _userManager.IsEmailConfirmedAsync(user))
@@ -72,10 +73,9 @@ namespace IdServerDemo.Controllers
                 }
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation(1, "User logged in.");
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -84,7 +84,6 @@ namespace IdServerDemo.Controllers
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning(2, "User account locked out.");
                     return View("Lockout");
                 }
                 else
@@ -114,10 +113,10 @@ namespace IdServerDemo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                // Add the Address properties:
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
                 user.BirthDate = model.BirthDate;
@@ -134,6 +133,13 @@ namespace IdServerDemo.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    ApplicationRole role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Name == "Users");
+                    if (role != null)
+                    {
+                        await _userManager.AddToRoleAsync(user, role.ToString());
+                    }
+
+                    //await _userManager.AddToRoleAsync(user, "Users");
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -141,12 +147,11 @@ namespace IdServerDemo.Controllers
                     await _emailSender.SendEmailAsync(model.Email, Startup.Configuration["SmtpUser"], "Confirm your account",
                         "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
                     //await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
 
                     ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
                          + "before you can log in.";
 
-                    
+
                     return View("Info");
                     //return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
@@ -164,7 +169,8 @@ namespace IdServerDemo.Controllers
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation(4, "User logged out.");
+            //await HttpContext.Authentication.SignOutAsync("ServerCookie");
+
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
@@ -197,7 +203,6 @@ namespace IdServerDemo.Controllers
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
             if (result.Succeeded)
             {
-                _logger.LogInformation(5, "User logged in with {Name} provider.", info.LoginProvider);
                 return RedirectToLocal(returnUrl);
             }
             if (result.RequiresTwoFactor)
@@ -253,16 +258,20 @@ namespace IdServerDemo.Controllers
                 user.EmailLinkDate = DateTime.Now;
                 user.LastLoginDate = DateTime.Now;
 
-                var result = await _userManager.CreateAsync(user);
+                var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    ApplicationRole role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Name == "Users");
+                    if (role != null)
+                    {
+                        await _userManager.AddToRoleAsync(user, role.ToString());
+                    }
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
-                        
-                        
+
+
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -309,7 +318,7 @@ namespace IdServerDemo.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -473,7 +482,6 @@ namespace IdServerDemo.Controllers
             }
             if (result.IsLockedOut)
             {
-                _logger.LogWarning(7, "User account locked out.");
                 return View("Lockout");
             }
             else

@@ -1,13 +1,6 @@
-﻿@using Microsoft.IdentityModel.Protocols.OpenIdConnect
-@model OpenIdConnectMessage
+﻿@{
+    ViewData["Title"] = "Error";
+}
 
-<div class="jumbotron">
-    <h1>An OpenID Connect error has occurred</h1>
-    <p class="lead text-left">
-        <strong>@Model.Error</strong>
-        @if (!string.IsNullOrEmpty(Model.ErrorDescription))
-        {
-            <small>@Model.ErrorDescription</small>
-        }
-    </p>
-</div>
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>

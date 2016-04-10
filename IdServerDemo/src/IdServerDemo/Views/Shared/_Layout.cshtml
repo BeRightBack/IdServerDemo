@@ -12,6 +12,23 @@
         @RenderSection("styles", required: false)
     </head>
     <body>
+        <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1285424324804833',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+        </script>
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">                   
@@ -26,10 +43,10 @@
                         {
                             if (User.IsInRole("Administrators"))
                             {
-                                <li><a asp-controller="Clients" asp-action="Index">Clients</a></li>
+                                <li><a asp-controller="Client" asp-action="Index">Clients</a></li>
                                 <li><a asp-controller="Resource" asp-action="Index">Resources</a></li>
-                                <li><a asp-controller="Roles" asp-action="Index">Roles</a></li>
-                                <li><a asp-controller="Users" asp-action="Index">Users</a></li>
+                                <li><a asp-controller="Role" asp-action="Index">Roles</a></li>
+                                <li><a asp-controller="User" asp-action="Index">Users</a></li>
                             }
                         }     
                     </ul>
@@ -41,7 +58,11 @@
             @RenderBody()
             <hr />
             <footer>
-                <p><a href="https://sgpconcept.com">Copyright <i class="fa fa-copyright"></i> <span>SGP Concept</span> @DateTime.Now.Year. All rights reserved</a></p>
+                <div class="left"><a href="https://sgpconcept.com">Copyright <i class="fa fa-copyright"></i> <span>IdServerDemo</span> @DateTime.Now.Year. All rights reserved</a></div><div class="fb-like right"
+     data-share="true"
+     data-width="450"
+     data-show-faces="true">
+</div>
             </footer>
         </div>
 

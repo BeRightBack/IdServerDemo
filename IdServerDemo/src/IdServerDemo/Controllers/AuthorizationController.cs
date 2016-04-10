@@ -8,6 +8,7 @@ using AspNet.Security.OpenIdConnect.Server;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http.Authentication;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -19,31 +20,28 @@ namespace IdServerDemo.Controllers
 {
     public class AuthorizationController : Controller
     {
-        private readonly ApplicationDbContext database;
 
-        public AuthorizationController(ApplicationDbContext database)
+        private readonly ApplicationDbContext database;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+
+        public AuthorizationController(ApplicationDbContext database, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             this.database = database;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         [HttpGet("~/connect/authorize")]
         [HttpPost("~/connect/authorize")]
         public async Task<IActionResult> Authorize(CancellationToken cancellationToken)
         {
-            // Note: when a fatal error occurs during the request processing, an OpenID Connect response
-            // is prematurely forged and added to the ASP.NET context by OpenIdConnectServerHandler.
-            // In this case, the OpenID Connect request is null and cannot be used.
-            // When the user agent can be safely redirected to the client application,
-            // OpenIdConnectServerHandler automatically handles the error and MVC is not invoked.
-            // You can safely remove this part and let AspNet.Security.OpenIdConnect.Server automatically
-            // handle the unrecoverable errors by switching ApplicationCanDisplayErrors to false in Startup.cs
             var response = HttpContext.GetOpenIdConnectResponse();
             if (response != null)
             {
                 return View("Error", response);
             }
 
-            // Extract the authorization request from the cache, the query string or the request form.
             var request = HttpContext.GetOpenIdConnectRequest();
             if (request == null)
             {
@@ -53,16 +51,11 @@ namespace IdServerDemo.Controllers
                     ErrorDescription = "An internal error has occurred"
                 });
             }
-
-            // Note: authentication could be theorically enforced at the filter level via AuthorizeAttribute
-            // but this authorization endpoint accepts both GET and POST requests while the cookie middleware
-            // only uses 302 responses to redirect the user agent to the login page, making it incompatible with POST.
-            // To work around this limitation, the OpenID Connect request is automatically saved in the cache and will be
-            // restored by the OpenID Connect server middleware after the external authentication process has been completed.
             if (!User.Identities.Any(identity => identity.IsAuthenticated))
             {
                 return new ChallengeResult(new AuthenticationProperties
                 {
+
                     RedirectUri = Url.Action(nameof(Authorize), new
                     {
                         unique_id = request.GetUniqueIdentifier()
@@ -70,12 +63,6 @@ namespace IdServerDemo.Controllers
                 });
             }
 
-            // Note: AspNet.Security.OpenIdConnect.Server automatically ensures an application
-            // corresponds to the client_id specified in the authorization request using
-            // IOpenIdConnectServerProvider.ValidateClientRedirectUri (see AuthorizationProvider.cs).
-            // In theory, this null check is thus not strictly necessary. That said, a race condition
-            // and a null reference exception could appear here if you manually removed the application
-            // details from the database after the initial check made by AspNet.Security.OpenIdConnect.Server.
             var application = await GetApplicationAsync(request.ClientId, cancellationToken);
             if (application == null)
             {
@@ -247,7 +234,8 @@ namespace IdServerDemo.Controllers
             // Instruct the cookies middleware to delete the local cookie created
             // when the user agent is redirected from the external identity provider
             // after a successful authentication flow (e.g Google or Facebook).
-            await HttpContext.Authentication.SignOutAsync("ServerCookie");
+            //await HttpContext.Authentication.SignOutAsync("ServerCookie");
+            await signInManager.SignOutAsync();
 
             // This call will instruct AspNet.Security.OpenIdConnect.Server to serialize
             // the specified identity to build appropriate tokens (id_token and token).
@@ -257,10 +245,10 @@ namespace IdServerDemo.Controllers
             await HttpContext.Authentication.SignOutAsync(OpenIdConnectServerDefaults.AuthenticationScheme);
         }
 
-        protected virtual Task<Application> GetApplicationAsync(string identifier, CancellationToken cancellationToken)
+        protected virtual Task<ApplicationClient> GetApplicationAsync(string identifier, CancellationToken cancellationToken)
         {
             // Retrieve the application details corresponding to the requested client_id.
-            return (from application in database.Applications
+            return (from application in database.ApplicationClients
                     where application.ApplicationID == identifier
                     select application).SingleOrDefaultAsync(cancellationToken);
         }

@@ -8,7 +8,6 @@ namespace IdServerDemo.ViewModels
         public UsersViewModel()
         {
             Paging = new PaginationSettings();
-
         }
         public string Query { get; set; } = string.Empty;
 

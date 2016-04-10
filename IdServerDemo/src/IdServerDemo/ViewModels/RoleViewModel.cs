@@ -1,13 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 namespace IdServerDemo.ViewModels
 {
-    public class RoleViewModel
+    public class RoleViewModel : IdentityRole<int>
     {
-        public int Id { get; set; }
-
-        [Required(AllowEmptyStrings = false)]
-        public string Name { get; set; }
         public string Description { get; set; }
     }
 }

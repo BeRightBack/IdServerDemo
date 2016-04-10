@@ -26,8 +26,7 @@
     "dnx451": {
       "dependencies": {
         "Microsoft.AspNet.Owin": "1.0.0-rc1-final",
-        "Microsoft.Owin": "3.0.0",
-        "NWebsec.Owin": "1.0.0"
+        "Microsoft.Owin": "3.0.0"
       }
     },
     "dnxcore50": { }

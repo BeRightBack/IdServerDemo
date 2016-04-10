@@ -10,26 +10,30 @@ namespace IdSvrMvcClientDemo.Controllers
 {
     public class AccountController : Controller
     {
+        string returnUrl = Startup.Configuration["Account"];
+        string BaseUrl = Startup.Configuration["Authority"];
+
         public IActionResult Index()
         {
             return RedirectToAction("Index", "Home");
-        } 
+        }
+
         // GET: /<controller>/
         public IActionResult Register()
         {
-             string returnUrl = Startup.Configuration["SiteAddress"];
+            var _Url = BaseUrl.ToString() + "Authentication/Register?returnurl=" + returnUrl.ToString();
+            return RedirectPermanent(_Url);
+        }
 
-            
-            var _Url = "https://localhost:44366/ExtAcct/Register?returnurl=" + returnUrl.ToString();
+        public IActionResult ForgotPassword()
+        {
+            var _Url = BaseUrl.ToString() + "Authentication/ForgotPassword?returnurl=" + returnUrl.ToString();
             return RedirectPermanent(_Url);
         }
 
         public IActionResult Manage()
         {
-            string returnUrl = Startup.Configuration["SiteAddress"];
-
-
-            var _Url = "https://localhost:44366/ExtMng/Index?returnurl=" + returnUrl.ToString();
+            var _Url = BaseUrl.ToString() + "Authentication/Index?returnurl=" + returnUrl.ToString();
             return RedirectPermanent(_Url);
         }
 
@@ -42,19 +46,39 @@ namespace IdSvrMvcClientDemo.Controllers
 
         public IActionResult ConfirmEmail()
         {
-            ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
-                         + "before you can log in.";
             return View();
         }
 
         public IActionResult ChangePasswordSuccess()
         {
             ViewBag.Message = "You successfully changed your password ";
-            return View();
+            return View("Info");
         }
         public IActionResult SetPasswordSuccess()
         {
             ViewBag.Message = "You successfully set your password ";
+            return View("Info");
+        }
+
+        public IActionResult ExternalLoginFailure()
+        {
+            ViewBag.Message = "Unsuccessful login with service.";
+            return View("Info");
+        }
+
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            ViewBag.Message = "Please check your email to reset your password.";
+            return View("Info");
+        }
+
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+        public IActionResult Lockout()
+        {
             return View();
         }
     }
